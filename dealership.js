@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import faker from "faker";
 
 dotenv.config();
-let _client;
+let _client = new MongoClient(process.env.MONGO_URL);
 
 // only evre create 1 client, if it already exists just return it;
 const createClient = async () => {
@@ -19,6 +19,11 @@ const getCarsCollection = async () => {
   const db = dealer.db("dealership");
   return db.collection("cars");
 };
+
+const getCars = async () => {
+  const col = await getCarsCollection()
+  col.find().toArray
+}
 
 const getBuyersCollection = async () => {
   const dealer = await createClient();
@@ -70,6 +75,8 @@ const run = async () => {
     address: faker.address.streetAddress(),
     phone: faker.phone.phoneNumber(),
   });
+  const newOrder = 
+  
   await createOrders({
     date: faker.date.month(),
     carID: newCar._id,
