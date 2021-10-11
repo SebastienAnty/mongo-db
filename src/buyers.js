@@ -12,7 +12,7 @@ const getBuyersCollection = async () => {
     return buyers.toArray()
   };
 
- export const getBuyerById = async () => {
+ export const getBuyerById = async (id) => {
       const buyersCollection = await getBuyersCollection
       const ret = await buyersCollection.find(id)
       return ret
@@ -21,7 +21,17 @@ const getBuyersCollection = async () => {
   export const createBuyers = async ({ name, address, phone }) => {
     const buyersCollection = await getBuyersCollection();
     const ret = await buyersCollection.insertOne({ name, address, phone });
-    return ret.insertedId
+    return ret
   };
 
- 
+  export const updateBuyer = async (id, { name, address, phone }) => {
+    const buyersCollection = await getBuyersCollection();
+    const ret = await buyersCollection.updateOne( {_id:id} ,{ name, address, phone } )
+    return ret
+  };
+
+  export const deleteBuyer = async (id) => {
+      const buyersCollection = await getBuyersCollection();
+      const ret = await buyersCollection.deleteOne({id})
+      return ret
+  }

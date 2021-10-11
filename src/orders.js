@@ -19,7 +19,19 @@ const getOrdersCollection = async () => {
   };
 
   export const createOrders = async ({ date, carID, buyerID }) => {
-    const carsCollection = await getOrdersCollection();
-    const ret = await carsCollection.insertOne({ date, carID, buyerID });
-    return ret.insertedId
+    const orderCollection = await getOrdersCollection();
+    const ret = await orderCollection.insertOne({ date, carID, buyerID });
+    return ret
   };
+
+  export const updateOrder = async (id, { date, carID, buyerID }) => {
+    const orderCollection = await getOrdersCollection();
+    const ret = await orderCollection.updateOne( {_id:id} ,{ date, carID, buyerID } )
+    return ret
+  };
+
+  export const deleteOrder = async (id) => {
+    const orderCollection = await getOrdersCollection();
+    const ret = await orderCollection.deleteOne({id})
+    return ret
+}
