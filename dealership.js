@@ -5,7 +5,6 @@ import faker from "faker";
 dotenv.config();
 let _client = new MongoClient(process.env.MONGO_URL);
 
-// only evre create 1 client, if it already exists just return it;
 const createClient = async () => {
   if (!_client) {
     _client = new MongoClient(process.env.MONGO_URL);
@@ -21,9 +20,9 @@ const getCarsCollection = async () => {
 };
 
 const getCars = async () => {
-  const col = await getCarsCollection()
-  col.find().toArray
-}
+  const col = await getCars();
+  col.find().toArray;
+};
 
 const getBuyersCollection = async () => {
   const dealer = await createClient();
@@ -40,13 +39,13 @@ const getOrdersCollection = async () => {
 const createCars = async ({ make, model, price }) => {
   const carsCollection = await getCarsCollection();
   await carsCollection.insertOne({ make, model, price });
-  return {make, model, price}
+  return { make, model, price };
 };
 
 const createBuyers = async ({ name, address, phone }) => {
   const buyersCollection = await getBuyersCollection();
   await buyersCollection.insertOne({ name, address, phone });
-  return {name, address, phone}
+  return { name, address, phone };
 };
 
 const createOrders = async ({ date, carID, buyerID }) => {
@@ -56,37 +55,36 @@ const createOrders = async ({ date, carID, buyerID }) => {
 };
 
 const readOrder = async () => {
-    const userCollection = await getCarsCollection(); 
-    const ret = await userCollection.findOne({"id": ObjectId("615603a34f617c6ae41f559f")});
-    return ret;
-}
+  const userCollection = await getCarsCollection();
+  const ret = await userCollection.findOne({
+    id: ObjectId("615603a34f617c6ae41f559f"),
+  });
+  return ret;
+};
 
 const run = async () => {
   const client = await createClient();
   const orders = await readOrder();
-  console.log(orders)
+  console.log(orders);
   const newCar = await createCars({
     make: faker.vehicle.model(),
     model: faker.vehicle.type(),
     price: faker.datatype.number(),
-  }).then()
+  }).then();
   const newBuyer = await createBuyers({
     name: `${faker.name.firstName()} ${faker.name.lastName}`,
     address: faker.address.streetAddress(),
     phone: faker.phone.phoneNumber(),
   });
-  const newOrder = 
-  
-  await createOrders({
+  const newOrder = await createOrders({
     date: faker.date.month(),
     carID: newCar._id,
-    buyerID: newBuyer._id
+    buyerID: newBuyer._id,
   });
   await client.close();
 };
 
 run().then();
-
 
 // new ObjectId("615603a34f617c6ae41f559f") carID
 // new ObjectId("615603a34f617c6ae41f55a0") buyerID
@@ -94,4 +92,3 @@ run().then();
 //   console.log(createdABuyer.insertedId)
 
 // "carID" : "615603a34f617c6ae41f559f", "buyerID" : "615603a34f617c6ae41f55a0" }  This is was what was returned from mongo
-

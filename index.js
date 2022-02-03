@@ -22,101 +22,98 @@ import {
   updateOrders,
   deleteOrders,
 } from "./src/orders.js";
-// import { createCars } from "./src/cars.js"
-// import { createBuyers } from "./src/buyers.js"
-// import { createOrders } from "./src/orders.js"
 
 dotenv.config();
 
-const app = express()
-app.use(express.json())
-//~~~~~~~~~~~~~~GET~~~~~~~~~~~~~//
+const app = express();
+app.use(express.json());
+
 app.get("/cars", async (req, res) => {
   try {
-    let cars = await getCars(req.body)
-    res.status(200).send(cars)
-  } catch(err) {
-    res.status(500).send(err)
-    console.log(err)
+    let cars = await getCars(req.body);
+    res.status(200).send(cars);
+  } catch (err) {
+    res.status(500).send(err);
+    console.log(err);
   }
-})
+});
 app.get("/buyers", async (req, res) => {
   try {
-    let buyers = await getBuyers(req.body)
-    res.status(200).send(buyers)
-  } catch(err){
-    res.status(500).send(err)
+    let buyers = await getBuyers(req.body);
+    res.status(200).send(buyers);
+  } catch (err) {
+    res.status(500).send(err);
   }
-})
+});
 app.get("/orders", async (req, res) => {
   try {
-    let orders = await getOrders(req.body)
-    res.status(200).send(orders)
-  } catch(err){
-    res.status(500).send(err)
+    let orders = await getOrders(req.body);
+    res.status(200).send(orders);
+  } catch (err) {
+    res.status(500).send(err);
   }
-})
-//~~~~~~~~~~~~~~~CREATE~~~~~~~~~~~~~~~~//
+});
+
 app.post("/cars", async (req, res) => {
   try {
-    let cars = await createCars(req.body)
-    res.status(201).send(cars)
-  } catch(err){
-    res.status(500).send(err)
-    console.log(err)
+    let cars = await createCars(req.body);
+    res.status(201).send(cars);
+  } catch (err) {
+    res.status(500).send(err);
+    console.log(err);
   }
-})
+});
 
 app.post("/buyers", async (req, res) => {
   try {
-    let buyers = await createBuyers(req.body)
-    res.status(201).send(buyers)
-  } catch(err) {
-    res.status(500).send(err)
-    console.log(err)
+    let buyers = await createBuyers(req.body);
+    res.status(201).send(buyers);
+  } catch (err) {
+    res.status(500).send(err);
+    console.log(err);
   }
-})
+});
 
 app.post("/orders", async (req, res) => {
   try {
-    let orders = await createOrders(req.body)
-    res.status(201).send(orders)
+    let orders = await createOrders(req.body);
+    res.status(201).send(orders);
   } catch {
-    res.status(500).send(err)
+    res.status(500).send(err);
   }
-})
-//~~~~~~~~~~~~~~~~GET BY ID~~~~~~~~~~~~~//
+});
+
 app.get("/cars/:id", async (req, res) => {
   try {
-    const id = ObjectId (req.params.id);
+    const id = ObjectId(req.params.id);
     let cars = await getCarById(id);
-    res.status(200).send(cars)
+    res.status(200).send(cars);
   } catch {
-    res.status(500).send(err)
-    console.log(err)
+    res.status(500).send(err);
+    console.log(err);
   }
-})
+});
 app.get("/buyers/:id", async (req, res) => {
   try {
-    const id = ObjectId (req.params.id);
+    const id = ObjectId(req.params.id);
     let buyers = await getBuyerById(id);
-    res.status(200).send(buyers)
+    res.status(200).send(buyers);
   } catch {
-    res.status(500).send(err)
-    console.log(err)
+    res.status(500).send(err);
+    console.log(err);
   }
-})
+});
 app.get("/orders/:id", async (req, res) => {
   try {
-    const id = ObjectId (req.params.id);
-    let orders = await getOrderById(id);
-    res.status(200).send(orders)
+    const id = ObjectId(req.params.id);
+    let orders = await getOrdersById(id);
+    res.status(200).send(orders);
   } catch {
-    res.status(500).send(err)
-    console.log(err)
+    res.status(500).send(err);
+    console.log(err);
   }
-})
-//~~~~~~~~~~~~~~~~~UPDATE~~~~~~~~~~~~~~~//
+});
+
 app.patch("/cars/:id", async (req, res) => {
   try {
     let cars = await updateCars(new ObjectId(req.params.id), req.body);
@@ -153,7 +150,7 @@ app.patch("/orders/:id", async (req, res) => {
     console.log(err);
   }
 });
-/*++++++++++++++++++++++++++++++++ Delete ++++++++++++++++++++++++++++++*/
+
 app.delete("/cars/:id", async (req, res) => {
   try {
     const id = new ObjectId(req.params.id);
@@ -182,8 +179,4 @@ app.delete("/orders/:id", async (req, res) => {
   }
 });
 
-
-
-app.listen(3000, () => console.log("listening on port 3000"))
-
-// exports.app = functions.https.onRequest(app)
+exports.app = functions.https.onRequest(app);
